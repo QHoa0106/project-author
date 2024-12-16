@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  my-sql:
+    image: mysql:8.3.0
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: Quanghoa01062001
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Quanghoa01062001
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
