@@ -10,7 +10,8 @@ export class AuthController {
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
-    return this.authService.register(email, password);
+    const user = await this.authService.register(email, password);
+    return user;
   }
 
   @Post('login')
@@ -18,6 +19,7 @@ export class AuthController {
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
-    return this.authService.login(email, password);
+    const tokens = await this.authService.login(email, password);
+    return tokens;
   }
 }

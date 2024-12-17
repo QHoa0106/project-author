@@ -12,17 +12,28 @@ export class AuthService {
 
   async register(email: string, password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    return this.usersService.createUser(email, hashedPassword);
+    const user = await this.usersService.createUser(email, hashedPassword);
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async login(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = { email: user.email, sub: user.id };
+      const accessToken = this.jwtService.sign(payload);
+      const refreshToken = this.generateRefreshToken(user.id);
+
       return {
-        accessToken: this.jwtService.sign(payload),
+        accessToken,
+        refreshToken,
       };
     }
     throw new Error('Invalid credentials');
+  }
+
+  private generateRefreshToken(userId: number) {
+    const payload = { sub: userId };
+    return this.jwtService.sign(payload, { expiresIn: '7d' });
   }
 }

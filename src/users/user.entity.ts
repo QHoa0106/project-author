@@ -1,26 +1,60 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Exclude } from 'class-transformer';
 
-@Entity()
+@Entity({ name: 'user', schema: 'User' })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
+  @Column({ unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column()
+  @Exclude()
   password: string;
 
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  @CreateDateColumn()
+  created_at: Date;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
+  @UpdateDateColumn()
+  updated_at: Date;
+}
+
+@Entity({ name: 'accesstoken', schema: 'Accesstoken' })
+export class AccessToken {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  token: string;
+
+  @Column()
+  userId: number;
+
+  @CreateDateColumn()
+  created_at: Date;
+}
+
+@Entity({ name: 'refreshtoken', schema: 'Refreshtoken' })
+export class RefreshToken {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  token: string;
+
+  @Column()
+  userId: number;
+
+  @CreateDateColumn()
+  created_at: Date;
 }

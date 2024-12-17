@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   my-sql:
@@ -8,8 +8,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Quanghoa01062001
       MYSQL_DATABASE: auth_db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: Quanghoa01062001
     networks:
       - app-network
 
